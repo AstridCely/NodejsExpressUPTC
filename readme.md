@@ -25,7 +25,7 @@ Proyecto de Peliculas con uso de NodeJS con Express y EJS como motor de vistas,D
 
 ```
 ### Descripción de Carpetas
-- `src` contiene los archivos y carpetas del todo el proyecto
+- `src` contiene los archivos y carpetas de todo el proyecto
 - `routes` Contiene el archivo `index.js` que establece el enrutamiento de la aplicación
 - `views` Contiene las vistas de la aplicación. Se usa el motor de plantillas EJS  
 - `templates` se encuentran las plantillas que se importarán en las diferentes parte de cada página o documento HTML para no repetir código, se utilizo bootstrap5 para los estilos.
