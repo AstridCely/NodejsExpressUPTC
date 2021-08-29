@@ -1,6 +1,6 @@
 # Proyecto Peliculas con Express y Notejs - EJS
 
-Proyecto de Peliculas con uso de NodeJS con Express y EJS como motor de vistas,Donde se podran añardir peliculas y eliminar utilizando un archivo json simulando una base de datos 
+Proyecto de Inventario de Peliculas con uso de NodeJS con Express y EJS como motor de vistas,Donde se podran añardir peliculas y eliminar utilizando un archivo json simulando una base de datos 
 
 # Extructura del Proyecto
 
