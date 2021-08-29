@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('templates/header') %>
+  <title>Nueva Pelicula</title>
+</head>
+
+<body>
+
+  <%- include('templates/navigation') %>
+  <div class="container p-4">
+    <form method="POST" target="/newMovie" class="card card-body">
+
+      <div class="form-group">
+        <label for="title">Titulo</label>
+        <input name="title" type="text" class="form-control" placeholder="Titulo de la pelicula" autofocus required>
+      </div>
+
+      <div class="form-group">
+        <label for="title">Autor</label>
+        <input name="author" type="text" class="form-control" placeholder="Autor" autofocus required>
+      </div>
+      
+      <div class="form-group">
+        <label for="image">Imagen</label>
+        <input type="url" name="image" class="form-control" placeholder="http://website.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descripcion</label>
+        <textarea class="form-control" name="description" rows="2" required>
+        </textarea>
+      </div>
+
+      <div class="form-group">
+        <input type="submit" value="Post Entry" class="btn btn-primary">
+      </div>
+    </form>
+
+  </div>
+
+  <%- include('templates/footer') %>
+</body>
+
+</html>
