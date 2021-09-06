@@ -1,6 +1,6 @@
 # Proyecto Peliculas con Express y Notejs - EJS
 
-Proyecto de Inventario de Peliculas con uso de NodeJS con Express y EJS como motor de vistas,Donde se podran añardir peliculas y eliminar utilizando un archivo json simulando una base de datos 
+Proyecto de Inventario de Peliculas con uso de NodeJS con Express y EJS como motor de vistas,Donde se podran añardir peliculas en el usuario administrador tanto como eliminarnarlas y el usuario puede comprar las peliculas en venta por el andrmistrador todo esto utilizando un archivo json simulando una base de datos.
 
 # Extructura del Proyecto
 
@@ -13,15 +13,24 @@ Proyecto de Inventario de Peliculas con uso de NodeJS con Express y EJS como mot
     | 	    ├── index.js
     └── views/
     |    ├── index.ejs
+    |    ├── indexUser.ejs
+    |    ├── Login.ejs
     |    ├── 404.ejs
     |    ├── newMovie.ejs
     |    └── templates/
     |    		├── header.ejs
     |    		├── navigation.ejs
+    |    		├── navigationUser.ejs
+    |    		├── headerLogin.ejs
     |    		└── footer.ejs
     └── public/css
-    |    	└── main.css
+    |    	├── main.css
+    |    	└── style.css
     └── app.js
+    |
+    └── index.js
+    |
+    └── Movies.json.js
 
 ```
 ### Descripción de Carpetas
@@ -35,14 +44,11 @@ Proyecto de Inventario de Peliculas con uso de NodeJS con Express y EJS como mot
 
 # Instalacion Y Configuracion
 ```
-npm init
-npm i express --save
-npm i ejs --save
-npm i nodemon --save-dev
-npm i morgan
-npm i uuidv4
+npm install
+npm run dev
 
 ```
+> Puerto del Servidor: 5000
 
 ### Archivo index.js
 
@@ -70,6 +76,8 @@ El Archivo `app.js` es donde se configura la aplicación, tiene el siguiente con
 const express = require('express');
 const path    = require('path');
 const logger  = require('morgan');
+const session = require("express-session");
+const uuidv4 = require('uuid/v4');
 
 const app = express();
 
@@ -82,9 +90,13 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.urlencoded({extended: false}));
 
+app.use(session({
+  secret: uuidv4(), 
+  resave: false,
+  saveUninitialized: true
+}));
 // Routes
 app.use(require('./routes/index'));
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 404 
@@ -93,7 +105,6 @@ app.use((req, res, next) => {
 });
 
 module.exports = app;
-
 ``` 
 ### Archivo routes/index.js
 
@@ -106,11 +117,42 @@ const router = express.Router();
 const fs = require('fs');
 const uuidv4 = require('uuid/v4');
 
+const  credential = {
+  email : "Astrid@gmail.com",
+  password : "Dudu123"
+}
+
+const  credential2 = {
+  email : "Usuario@gmail.com",
+  password : "User1"
+}
+
 const json_Movies = fs.readFileSync('src/Movies.json', 'utf-8');
 let Movies = JSON.parse(json_Movies);
 
-router.get('/', (req, res) => {
+router.get('/', (req, res) =>{
+  res.render('Login', { title : "Inicie Sesion"});
+})
+
+router.post('/login', (req, res)=>{
+  if(req.body.email == credential.email && req.body.password == credential.password){
+      req.session.user = req.body.email;
+      res.redirect('/index');
+  }
+  else if(req.body.email == credential2.email && req.body.password == credential2.password){
+    req.session.user = req.body.email;
+    res.redirect('/indexUser');
+    
+  }else{
+      res.end("Invalid Username")
+  }
+});
+router.get('/index', (req, res) => {
   res.render('index', { Movies});
+});
+
+router.get('/indexUser', (req, res) => {
+  res.render('indexUser', { Movies});
 });
 
 router.get('/newMovie', (req, res) => {
@@ -119,9 +161,9 @@ router.get('/newMovie', (req, res) => {
 
 router.post('/newMovie', (req, res) => {
 
-  const { title, author, image, description } = req.body;
+  const { title, gender, image, Duracion, description } = req.body;
 
-  if (!title || !author || !image || !description) {
+  if (!title || !gender ||  !image  || ! Duracion || !description) {
     res.status(400).send("Entries must have a title and body");
     return;
   }
@@ -129,7 +171,8 @@ router.post('/newMovie', (req, res) => {
   var newMovie = {
     id: uuidv4(),
     title,
-    author,
+    gender,
+    Duracion,
     image,
     description
   };
@@ -141,17 +184,25 @@ router.post('/newMovie', (req, res) => {
   const json_Movies = JSON.stringify(Movies);
   fs.writeFileSync('src/Movies.json', json_Movies, 'utf-8');
 
-  res.redirect('/');
+  res.redirect('/index');
 });
 
-router.get('/delete/:id', (req, res) => {
+router.get('/Buy/:id', (req, res) => {
   Movies = Movies.filter(Movies => Movies.id != req.params.id);
-
   // guardando
   const json_Movies = JSON.stringify(Movies);
   fs.writeFileSync('src/Movies.json', json_Movies, 'utf-8');
 
-  res.redirect('/')
+  res.redirect('/indexUser')
+});
+
+router.get('/delete/:id', (req, res) => {
+  Movies = Movies.filter(Movies => Movies.id != req.params.id);
+  // guardando
+  const json_Movies = JSON.stringify(Movies);
+  fs.writeFileSync('src/Movies.json', json_Movies, 'utf-8');
+
+  res.redirect('/index')
 });
 
 module.exports = router;
