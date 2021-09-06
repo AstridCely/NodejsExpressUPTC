@@ -3,7 +3,7 @@ const path    = require('path');
 const logger  = require('morgan');
 const session = require("express-session");
 const uuidv4 = require('uuid/v4');
-const Swal = require('sweetalert2');
+
 
 const app = express();
 
