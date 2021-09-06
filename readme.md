@@ -50,6 +50,15 @@ npm run dev
 ```
 > Puerto del Servidor: 5000
 
+```
+Admin:
+Correo: Astrid@gmail.com   
+Contraseña: Dudu123
+
+Cuenta Usuario:
+Correo: Usuario@gmail.com
+Contraseña: User1
+
 ### Archivo index.js
 
 El Archivo `index.js` es donde se inicia el servidor tiene el siguiente contenido:
