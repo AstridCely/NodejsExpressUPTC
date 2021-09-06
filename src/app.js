@@ -1,6 +1,9 @@
 const express = require('express');
 const path    = require('path');
 const logger  = require('morgan');
+const session = require("express-session");
+const uuidv4 = require('uuid/v4');
+const Swal = require('sweetalert2');
 
 const app = express();
 
@@ -13,9 +16,13 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.urlencoded({extended: false}));
 
+app.use(session({
+  secret: uuidv4(), 
+  resave: false,
+  saveUninitialized: true
+}));
 // Routes
 app.use(require('./routes/index'));
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 404 
