@@ -3,6 +3,8 @@ const router = express.Router();
 const fs = require('fs');
 const uuidv4 = require('uuid/v4');
 
+
+
 const  credential = {
   email : "Astrid@gmail.com",
   password : "Dudu123"
@@ -30,7 +32,8 @@ router.post('/login', (req, res)=>{
     res.redirect('/indexUser');
     
   }else{
-      res.end("Invalid Username")
+    res.end("Contrasena o Usuario Incorrecto");
+    res.redirect('/');
   }
 });
 router.get('/index', (req, res) => {
